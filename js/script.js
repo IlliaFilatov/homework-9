@@ -9,19 +9,11 @@ function MilitaryResource(type, health, distance) {
 }
 
 MilitaryResource.prototype.isReadyToMove = function() {
-  if (this.distance !== 0) {
-    return true;
-  } else {
-    return false;
-  }
+  return this.distance !== 0;
 };
 
 MilitaryResource.prototype.isReadyToFight = function() {
-  if (this.health === this.maxHealth) {
-    return true;
-  } else {
-    return false;
-  }
+  return this.health === this.maxHealth;
 };
 
 MilitaryResource.prototype.restore = function() {
@@ -64,25 +56,38 @@ Squad.prototype.restore = function() {
   return this.squad;
 };
 
+// Squad.prototype.getReadyToMoveResources = function() {
+//   var resourcesDistance = [];
+//   this.squad.forEach(function(element){
+//     if (element.distance != 0) resourcesDistance.push(element);
+//   });
+//   return resourcesDistance;
+// };
+
 Squad.prototype.getReadyToMoveResources = function() {
-  var resourcesDistance = [];
-  this.squad.forEach(function(element){
-    if (element.distance != 0) resourcesDistance.push(element);
-  });
-  return resourcesDistance;
+  return this.squad.filter(function(element){
+    return element.isReadyToMove();
+  })
 };
+
 Squad.prototype.combineResources = function(defaultResources){
   return defaultResources.sort(function() {
     return 0.5 - Math.random();
   });
 };
 
+// Squad.prototype.cloneResource = function(){
+//   var clonedSquad = [];
+//   this.squad.forEach(function(element){
+//     clonedSquad.push(element.clone());
+//   });
+//   return clonedSquad;
+// };
+
 Squad.prototype.cloneResource = function(){
-  var clonedSquad = [];
-  this.squad.forEach(function(element){
-    clonedSquad.push(element.clone());
-  });
-  return clonedSquad;
+  return this.squad.map(function(element){
+     return element.clone();
+   });
 };
 
 //ТЕСТИРОВАНИЕ 
@@ -106,14 +111,14 @@ warriorsSet.push(naruto, dovahkiin, t34);
 var suicideSquad = new Squad(warriorsSet);
 
 //Пак для отряда
-// console.log("is ready to move: ", suicideSquad.isReadyToMove());
-// console.log("is ready to fight: ", suicideSquad.isReadyToFight());
-// console.log("resources, ready to move: ", suicideSquad.getReadyToMoveResources());
-// console.log("cloned squad: ", suicideSquad.cloneResource());
-// suicideSquad.restore();
-// console.log("Восстановлены все юниты.");
-// console.log("is ready to move: ", suicideSquad.isReadyToMove());
-// console.log("is ready to fight: ", suicideSquad.isReadyToFight());
-// console.log("resources, ready to move: ", suicideSquad.getReadyToMoveResources());
-// console.log("cloned squad: ", suicideSquad.cloneResource());
+console.log("is ready to move: ", suicideSquad.isReadyToMove());
+console.log("is ready to fight: ", suicideSquad.isReadyToFight());
+console.log("resources, ready to move: ", suicideSquad.getReadyToMoveResources());
+console.log("cloned squad: ", suicideSquad.cloneResource());
+suicideSquad.restore();
+console.log("Восстановлены все юниты.");
+console.log("is ready to move: ", suicideSquad.isReadyToMove());
+console.log("is ready to fight: ", suicideSquad.isReadyToFight());
+console.log("resources, ready to move: ", suicideSquad.getReadyToMoveResources());
+console.log("cloned squad: ", suicideSquad.cloneResource());
 
